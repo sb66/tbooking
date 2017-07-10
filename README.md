@@ -26,7 +26,7 @@ $ curl localhost:8080
 You can view existing people objects using a similar request:
 
 ```sh
-$ curl localhost:8080/trade
+$ curl localhost:8080/trades
 ```
 
 and can create new ones using a POST:

@@ -2,9 +2,8 @@ package io.github.sb66.model;
 
 import javax.persistence.*;
 
-@Entity  @EntityListeners(TradeListener.class)
-public class Trade {
-
+@Entity
+public class BookedTrade {
 
 	@Id
     @Column(columnDefinition="VARCHAR(100)")
@@ -17,6 +16,17 @@ public class Trade {
 	private String firmAccount;
 	private String counterParty;
 
+	private String bookingStatus;
+
+	public static double getProbabilityFailed() {
+		return probabilityFailed;
+	}
+
+	public static void setProbabilityFailed(double probabilityFailed) {
+		BookedTrade.probabilityFailed = probabilityFailed;
+	}
+
+	private static double probabilityFailed=0.0;
 
 	public double getPrice() {
 		return price;
@@ -58,6 +68,16 @@ public class Trade {
 		this.counterParty = counterParty;
 	}
 
+    public BookedTrade() {}
+
+    public String getTradeId() {
+        return tradeId;
+    }
+
+    public void setTradeId(String tradeId) {
+        this.tradeId = tradeId;
+    }
+
 	public String getId() {
 		return id;
 	}
@@ -66,29 +86,47 @@ public class Trade {
 		this.id = id;
 	}
 
-	public String getTradeId() {
-        return tradeId;
-    }
+ 	public String getBookingStatus() {
+		return bookingStatus;
+	}
 
-    private void setTradeId(String tradeId) {
-        this.tradeId = tradeId;
-    }
+	public void setBookingStatus(String bookingStatus) {
+		this.bookingStatus = bookingStatus;
+	}
 
-	@PrePersist
-	public void onPrePersist() {
-		setTradeId(getId());
+//	@PrePersist
+//	public void doPrePersist() {
+//		this.id=this.tradeId;
+//	}
+
+
+	public BookedTrade(Trade trade) {
+		setId(trade.getId());
+	    setTradeId(trade.getTradeId());
+		setPrice(trade.getPrice());
+		setQuantity(trade.getQuantity());
+		setInstrument(trade.getInstrument());
+		setFirmAccount(trade.getFirmAccount());
+		setCounterParty(trade.getCounterParty());
+		if (Math.random()>probabilityFailed) {
+			setBookingStatus("success");
+		} else {
+			setBookingStatus("failed");
+
+		}
 	}
 
 	@Override
 	public String toString() {
-		return "Trade{" +
+		return "BookedTrade{" +
 				"tradeId='" + tradeId + '\'' +
+				", id='" + id + '\'' +
 				", price=" + price +
 				", quantity=" + quantity +
 				", instrument='" + instrument + '\'' +
 				", firmAccount='" + firmAccount + '\'' +
 				", counterParty='" + counterParty + '\'' +
+				", bookingStatus='" + bookingStatus + '\'' +
 				'}';
 	}
-
 }
