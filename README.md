@@ -45,7 +45,7 @@ $ curl -X POST -H "Content-Type:application/json" -d '{ "price" : 99.0, "quantit
 You can view booked trade objects with this request. These are similar to the original trades but have an additional trade state field which has a random value of success or failed based on the probabiliityOfFailure parameter:
 
 ```sh
-$ curl localhost:8080/bookeTrades
+$ curl localhost:8080/bookedTrades
 ```
 ### Todo
 
